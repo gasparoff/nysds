@@ -692,6 +692,43 @@ describe("nys-combobox", () => {
     expect(label?.getAttribute("label")).to.equal("Favorite Fruit");
   });
 
+  it("describes the input with the description text", async () => {
+    const el = await fixture<NysCombobox>(
+      html`<nys-combobox
+        id="fav"
+        label="Favorite Fruit"
+        description="Fruits organized by category"
+      ></nys-combobox>`,
+    );
+    const input = el.shadowRoot?.querySelector("input") as HTMLInputElement;
+    expect(input.getAttribute("aria-describedby")).to.equal("fav--description");
+    const description = el.shadowRoot?.getElementById("fav--description");
+    expect(description?.textContent?.trim()).to.equal(
+      "Fruits organized by category",
+    );
+
+    el.showError = true;
+    await el.updateComplete;
+    expect(input.getAttribute("aria-describedby")).to.equal(
+      "fav--description fav--error",
+    );
+  });
+
+  it("describes the input with slotted description content", async () => {
+    const el = await fixture<NysCombobox>(
+      html`<nys-combobox id="fav" label="Favorite Fruit">
+        <span slot="description">Slotted help</span>
+      </nys-combobox>`,
+    );
+    const input = el.shadowRoot?.querySelector("input") as HTMLInputElement;
+    expect(input.getAttribute("aria-describedby")).to.equal("fav--description");
+    const slot = el.shadowRoot?.getElementById(
+      "fav--description",
+    ) as HTMLSlotElement;
+    const assigned = slot.assignedElements();
+    expect(assigned[0]?.textContent).to.equal("Slotted help");
+  });
+
   it("sets aria-required when required", async () => {
     const el = await fixture<NysCombobox>(
       html`<nys-combobox required></nys-combobox>`,

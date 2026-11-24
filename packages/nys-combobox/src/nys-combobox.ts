@@ -930,7 +930,12 @@ export class NysCombobox extends NysFormControlElement {
           tooltip=${this.tooltip}
           ?inverted=${this.inverted}
         >
-          <slot name="description" slot="description">${this.description}</slot>
+          <slot
+            id="${this.id}--description"
+            name="description"
+            slot="description"
+            >${this.description}</slot
+          >
         </nys-label>
         <div
           class="nys-combobox__container ${this._isOpen
@@ -963,7 +968,12 @@ export class NysCombobox extends NysFormControlElement {
               aria-invalid=${this.showError ? "true" : "false"}
               aria-errormessage=${this.id + "--error"}
               aria-describedby=${ifDefined(
-                this.showError ? this.id + "--error" : undefined,
+                [
+                  this.label ? `${this.id}--description` : "",
+                  this.showError ? `${this.id}--error` : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ") || undefined,
               )}
               .value=${this._filterText}
               form=${ifDefined(this.form || undefined)}
