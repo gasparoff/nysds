@@ -977,7 +977,9 @@ export class NysCombobox extends NysFormControlElement {
                 ? html`
                     <nys-button
                       class="nys-combobox__clear"
-                      label="Clear selection"
+                      label=${this.label
+                        ? `Clear selection for ${this.label}`
+                        : "Clear selection"}
                       variant="ghost"
                       size="sm"
                       circle
@@ -994,7 +996,9 @@ export class NysCombobox extends NysFormControlElement {
                 : ""}
               <nys-button
                 class="nys-combobox__chevron"
-                label="Toggle dropdown"
+                label=${this.label
+                  ? `Toggle dropdown for ${this.label}`
+                  : "Toggle dropdown"}
                 variant="ghost"
                 size="sm"
                 circle

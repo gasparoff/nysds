@@ -741,6 +741,29 @@ describe("nys-combobox", () => {
     expect(chevronText?.textContent?.trim()).to.equal("Toggle dropdown");
   });
 
+  it("includes the field label in the clear and toggle button names", async () => {
+    const el = await fixture<NysCombobox>(html`
+      <nys-combobox label="Favorite Fruit" value="apple">
+        <option value="apple">Apple</option>
+      </nys-combobox>
+    `);
+    await el.updateComplete;
+
+    const clearText = el.shadowRoot
+      ?.querySelector(".nys-combobox__clear")
+      ?.shadowRoot?.querySelector("button .nys-button__text");
+    const chevronText = el.shadowRoot
+      ?.querySelector(".nys-combobox__chevron")
+      ?.shadowRoot?.querySelector("button .nys-button__text");
+
+    expect(clearText?.textContent?.trim()).to.equal(
+      "Clear selection for Favorite Fruit",
+    );
+    expect(chevronText?.textContent?.trim()).to.equal(
+      "Toggle dropdown for Favorite Fruit",
+    );
+  });
+
   // Keyboard interaction tests
   describe("keyboard navigation", () => {
     it("opens dropdown with ArrowDown when closed", async () => {
